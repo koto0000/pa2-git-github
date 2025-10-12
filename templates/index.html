@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>To-Do App - Portafolio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>✔️ To‑Do App</h1>
+    <p class="subtitle">Construcción de Software – Portafolio final</p>
+
+    <form class="add-form" action="{{ url_for('add') }}" method="post">
+      <input type="text" name="text" placeholder="Agregar tarea..." required>
+      <button type="submit">Añadir</button>
+    </form>
+
+    {% if todos %}
+    <ul class="todo-list">
+      {% for t in todos %}
+      <li class="todo-item">
+        <form action="{{ url_for('toggle', todo_id=t.id) }}" method="post">
+          <button class="toggle" title="Marcar / Desmarcar">{{ "☑" if t.done else "☐" }}</button>
+        </form>
+        <span class="text {{ 'done' if t.done }}">{{ t.text }}</span>
+        <span class="meta">{{ t.created_at }}</span>
+        <form action="{{ url_for('delete', todo_id=t.id) }}" method="post">
+          <button class="delete" title="Eliminar">🗑</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p class="empty">No hay tareas. ¡Añade la primera! 🚀</p>
+    {% endif %}
+  </div>
+</body>
+</html>
